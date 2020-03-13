@@ -9,6 +9,8 @@ from timeit import default_timer as timer
 
 import random
 
+cache = {}
+
 
 def proof_of_work(last_proof):
     """
@@ -24,7 +26,6 @@ def proof_of_work(last_proof):
 
     print("Searching for next proof")
     guess_proof = 0
-    cache = {}
     valid_guess = 0
     while not valid_guess:
         last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()
