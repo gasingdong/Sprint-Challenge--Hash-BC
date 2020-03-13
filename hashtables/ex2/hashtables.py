@@ -33,6 +33,13 @@ def hash_table_insert(hash_table, key, value):
     current_pair = hash_table.storage[index]
     last_pair = None
 
+    if current_pair:
+        new_hash_table = hash_table_resize(hash_table)
+        hash_table.storage = new_hash_table.storage
+        hash_table.capacity = new_hash_table.capacity
+        index = hash(key, len(hash_table.storage))
+        current_pair = hash_table.storage[index]
+
     while current_pair is not None and current_pair.key != key:
         last_pair = current_pair
         current_pair = last_pair.next
