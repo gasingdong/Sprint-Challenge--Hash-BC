@@ -10,6 +10,7 @@ from timeit import default_timer as timer
 import random
 
 cache = {}
+guess_proof = 0
 
 
 def proof_of_work(last_proof):
@@ -25,7 +26,7 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    guess_proof = 0
+    global guess_proof
     valid_guess = 0
     while not valid_guess:
         last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()
