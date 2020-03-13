@@ -9,6 +9,9 @@ from timeit import default_timer as timer
 
 import random
 
+cache = {}
+guess_proof = 0
+
 
 def proof_of_work(last_proof):
     """
@@ -23,14 +26,27 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    proof = 0
-    #  TODO: Your code here
+    global guess_proof
+    valid_guess = 0
+    while not valid_guess:
+        last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()
+        last_six = last_hash[-6:]
+        if last_six in cache:
+            valid_guess = cache[last_six]
+        else:
+            guess_hash = hashlib.sha256(str(guess_proof).encode()).hexdigest()
+            first_six = guess_hash[:6]
+            if first_six not in cache:
+                cache[first_six] = guess_proof
+            if valid_proof(last_six, first_six):
+                valid_guess = guess_proof
+            else:
+                guess_proof += 1
+    print("Proof found: " + str(valid_guess) + " in " + str(timer() - start))
+    return valid_guess
 
-    print("Proof found: " + str(proof) + " in " + str(timer() - start))
-    return proof
 
-
-def valid_proof(last_hash, proof):
+def valid_proof(last_six, first_six):
     """
     Validates the Proof:  Multi-ouroborus:  Do the last six characters of
     the hash of the last proof match the first six characters of the hash
@@ -39,8 +55,7 @@ def valid_proof(last_hash, proof):
     IE:  last_hash: ...AE9123456, new hash 123456E88...
     """
 
-    # TODO: Your code here!
-    pass
+    return first_six == last_six
 
 
 if __name__ == '__main__':
