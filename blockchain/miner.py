@@ -25,23 +25,23 @@ def proof_of_work(last_proof):
     print("Searching for next proof")
     guess_proof = 0
     cache = {}
-    valid_proof = 0
-    while not valid_proof:
+    valid_guess = 0
+    while not valid_guess:
         last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()
         last_six = last_hash[-6:]
         if last_six in cache:
-            valid_proof = cache[last_six]
+            valid_guess = cache[last_six]
         else:
             guess_hash = hashlib.sha256(str(guess_proof).encode()).hexdigest()
             first_six = guess_hash[:6]
             if first_six not in cache:
                 cache[first_six] = guess_proof
             if valid_proof(last_six, first_six):
-                valid_proof = guess_proof
+                valid_guess = guess_proof
             else:
                 guess_proof += 1
-    print("Proof found: " + str(valid_proof) + " in " + str(timer() - start))
-    return valid_proof
+    print("Proof found: " + str(valid_guess) + " in " + str(timer() - start))
+    return valid_guess
 
 
 def valid_proof(last_six, first_six):
