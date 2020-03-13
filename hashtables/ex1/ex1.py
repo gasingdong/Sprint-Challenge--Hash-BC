@@ -8,11 +8,14 @@ from hashtables import (HashTable,
 
 def get_indices_of_item_weights(weights, length, limit):
     ht = HashTable(16)
-
-    """
-    YOUR CODE HERE
-    """
-
+    for i in range(0, length):
+        weight = weights[i]
+        complement = hash_table_retrieve(ht, limit - weight)
+        if complement is not None:
+            first = complement
+            second = i
+            return (first, second) if first >= second else (second, first)
+        hash_table_insert(ht, weight, i)
     return None
 
 
